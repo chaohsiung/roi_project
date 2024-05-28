@@ -1,0 +1,77 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image List</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        #display-container {
+            position: relative;
+            width: 100%;
+        }
+        #display-image, #display-mask {
+            position: absolute;
+            width: 100%;
+            height: auto;
+        }
+        #display-mask {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <!-- Left container for filenames -->
+            <div class="col-sm">
+                <ul id="image-list">
+                    {% for image in images %}
+                        <li><a href="#" data-image="{{ image }}">{{ image }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Center container for image and mask -->
+            <div class="col-sm">
+                <div id="display-container">
+                    <img id="display-image" src="" alt="">
+                    <img id="display-mask" src="" alt="">
+                </div>
+            </div>
+
+            <!-- Right container for "Show ROI" button -->
+            <div class="col-sm">
+                <button id="show-roi" class="btn btn-primary" disabled>Show ROI</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script>
+        // jQuery to update the image source when a filename is clicked
+        $(document).ready(function() {
+            $('#image-list a').click(function(e) {
+                e.preventDefault();
+                var image = $(this).data('image');
+                $('#display-image').attr('src', "{% static 'images/' %}" + image);
+                $('#display-mask').attr('src', "{% static 'masks/' %}" + image);
+                $('#show-roi').prop('disabled', false);
+            });
+
+        $('#show-roi').click(function() {
+            var currentOpacity = $('#display-mask').css('opacity');
+            if (currentOpacity == 0) {
+                $('#display-mask').css('opacity', 0.5);
+            } else {
+                $('#display-mask').css('opacity', 0);
+            }
+        });
+        });
+    </script>
+</body>
+</html>

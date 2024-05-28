@@ -1,0 +1,13 @@
+<!-- roiproject/imageapp/templates/image_detail.html -->
+{% load static %}
+<img src="{% static 'images/'|add:image_name %}" alt="{{ image_name }}">
+<img src="{% static 'masks/'|add:image_name %}" alt="{{ image_name }}">
+
+<div class="left-container">
+    <a href="{% url 'image_list' %}">Back to image list</a><br>
+    {{ image_name }}
+</div>
+<div class="center-container">
+    <img src="{{ image_path }}" alt="{{ image_name }}">
+    <img src="{{ mask_path }}" alt="{{ image_name }} mask">
+</div>
